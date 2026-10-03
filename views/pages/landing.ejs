@@ -1,0 +1,178 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="flex-grow-1">
+  <!-- Hero Section -->
+  <section class="py-5 bg-gradient-hero text-dark border-bottom position-relative overflow-hidden">
+    <div class="container py-lg-5">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary-subtle text-primary border border-primary-subtle mb-3 fw-semibold small">
+            <i class="bi bi-award-fill"></i> Cognifyz Full Stack Development Internship Project
+          </div>
+          <h1 class="display-4 fw-extrabold tracking-tight mb-3">
+            TaskFlow <span class="text-primary">– Full Stack</span> Task Management System
+          </h1>
+          <p class="lead text-secondary mb-4">
+            A production-ready full stack task system integrating all 8 internship tasks: Node.js Express architecture, EJS server rendering, client & server validation, responsive Bootstrap UI, dynamic DOM manipulation, complete RESTful CRUD API, MongoDB persistence, bcrypt + JWT authentication, live external Weather API, Redis caching, and BullMQ background queues.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="/login?demo=true" class="btn btn-primary btn-lg px-4 shadow d-flex align-items-center gap-2">
+              <i class="bi bi-box-arrow-in-right"></i>
+              <span>Open Live Demo</span>
+            </a>
+            <a href="/register" class="btn btn-outline-dark btn-lg px-4 d-flex align-items-center gap-2">
+              <i class="bi bi-person-plus"></i>
+              <span>Create Account</span>
+            </a>
+            <a href="/docs" class="btn btn-light border btn-lg px-4 d-flex align-items-center gap-2 text-secondary">
+              <i class="bi bi-journal-code text-primary"></i>
+              <span>Tasks 1–8 Audit</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white">
+            <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between py-3 px-4">
+              <div class="d-flex align-items-center gap-2">
+                <span class="rounded-circle bg-danger d-inline-block" style="width: 10px; height: 10px;"></span>
+                <span class="rounded-circle bg-warning d-inline-block" style="width: 10px; height: 10px;"></span>
+                <span class="rounded-circle bg-success d-inline-block" style="width: 10px; height: 10px;"></span>
+                <span class="ms-2 small text-secondary">TaskFlow Dashboard Live Preview</span>
+              </div>
+              <span class="badge bg-success-subtle text-success border border-success-subtle">Online</span>
+            </div>
+            <div class="card-body p-4 bg-light">
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <div class="bg-white p-3 rounded-3 border shadow-xs">
+                    <div class="text-secondary small fw-medium">Total Tasks</div>
+                    <div class="fs-3 fw-bold text-primary">12</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="bg-white p-3 rounded-3 border shadow-xs">
+                    <div class="text-secondary small fw-medium">Completed</div>
+                    <div class="fs-3 fw-bold text-success">8</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-3 rounded-3 border shadow-xs mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="small fw-semibold text-dark">Internship Completion Rate</span>
+                  <span class="small fw-bold text-primary">100%</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+
+              <div class="bg-white p-3 rounded-3 border shadow-xs d-flex align-items-center justify-content-between">
+                <div>
+                  <div class="small text-secondary">Live Weather Widget</div>
+                  <div class="fw-bold text-dark">New York, US &bull; 21.5°C</div>
+                </div>
+                <span class="fs-3">⛅</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 Internship Tasks Roadmap -->
+  <section class="py-5 bg-white">
+    <div class="container py-lg-4">
+      <div class="text-center max-w-700 mx-auto mb-5">
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-1 mb-2">Cognifyz Syllabus Architecture</span>
+        <h2 class="fw-bold tracking-tight">All 8 Internship Tasks Built Into One System</h2>
+        <p class="text-secondary">Explore the progressive implementation across frontend, backend, database, external APIs, and advanced caching infrastructure.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Task 1 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 border shadow-xs hover-card rounded-3 p-3">
+            <div class="badge bg-secondary-subtle text-secondary w-fit mb-2">Task 1</div>
+            <h5 class="fw-bold text-dark">HTML & EJS Server</h5>
+            <p class="text-secondary small mb-0">Express HTTP routing, semantic HTML5 forms, POST handling, EJS modular templates and dynamic partials.</p>
+          </div>
+        </div>
+
+        <!-- Task 2 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 border shadow-xs hover-card rounded-3 p-3">
+            <div class="badge bg-secondary-subtle text-secondary w-fit mb-2">Task 2</div>
+            <h5 class="fw-bold text-dark">Validation Architecture</h5>
+            <p class="text-secondary small mb-0">Client-side instant feedback and server-side validation with regex for email, phone format, and password entropy rules.</p>
+          </div>
+        </div>
+
+        <!-- Task 3 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 border shadow-xs hover-card rounded-3 p-3">
+            <div class="badge bg-secondary-subtle text-secondary w-fit mb-2">Task 3</div>
+            <h5 class="fw-bold text-dark">Responsive Bootstrap UI</h5>
+            <p class="text-secondary small mb-0">Clean dashboard layout, collapsible sidebar, statistical widgets, responsive tables, badge systems, and CSS grid.</p>
+          </div>
+        </div>
+
+        <!-- Task 4 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 border shadow-xs hover-card rounded-3 p-3">
+            <div class="badge bg-secondary-subtle text-secondary w-fit mb-2">Task 4</div>
+            <h5 class="fw-bold text-dark">Advanced JavaScript</h5>
+            <p class="text-secondary small mb-0">Dynamic DOM rendering, client-side live search, multi-criteria filtering, sorting, and asynchronous delete confirmation.</p>
+          </div>
+        </div>
+
+        <!-- Task 5 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 border shadow-xs hover-card rounded-3 p-3">
+            <div class="badge bg-secondary-subtle text-secondary w-fit mb-2">Task 5</div>
+            <h5 class="fw-bold text-dark">REST API & CRUD</h5>
+            <p class="text-secondary small mb-0">Complete REST endpoints (GET, POST, PUT, DELETE /api/tasks), proper HTTP 200/201/400/404 codes and JSON payloads.</p>
+          </div>
+        </div>
+
+        <!-- Task 6 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 border shadow-xs hover-card rounded-3 p-3">
+            <div class="badge bg-secondary-subtle text-secondary w-fit mb-2">Task 6</div>
+            <h5 class="fw-bold text-dark">MongoDB & JWT Auth</h5>
+            <p class="text-secondary small mb-0">Mongoose User and Task schemas, bcrypt password hashing, JWT stateless authorization, and per-user task isolation.</p>
+          </div>
+        </div>
+
+        <!-- Task 7 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 border shadow-xs hover-card rounded-3 p-3">
+            <div class="badge bg-secondary-subtle text-secondary w-fit mb-2">Task 7</div>
+            <h5 class="fw-bold text-dark">Weather API & Security</h5>
+            <p class="text-secondary small mb-0">Live backend integration with Open-Meteo, 5-second timeout guard, rate limiting, and documented OAuth architecture.</p>
+          </div>
+        </div>
+
+        <!-- Task 8 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 border shadow-xs hover-card rounded-3 p-3">
+            <div class="badge bg-secondary-subtle text-secondary w-fit mb-2">Task 8</div>
+            <h5 class="fw-bold text-dark">Redis & BullMQ Queue</h5>
+            <p class="text-secondary small mb-0">Cache-aside strategy on GET /api/tasks, automatic invalidation on CRUD, BullMQ background jobs, and error middleware.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 text-center">
+        <a href="/login?demo=true" class="btn btn-primary px-5 py-2 fw-semibold shadow-sm">
+          Enter TaskFlow System
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary-subtle sticky-top shadow-sm py-2">
+  <div class="container-fluid px-3 px-lg-4">
+    <!-- Brand -->
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-white text-decoration-none" href="/">
+      <div class="bg-primary text-white rounded p-1 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+        <i class="bi bi-check2-square fs-5"></i>
+      </div>
+      <span>TaskFlow</span>
+      <span class="badge bg-primary-subtle text-primary border border-primary-subtle fs-8 fw-semibold ms-1">v1.0</span>
+    </a>
+
+    <!-- Mobile Toggle Button -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav Links -->
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-1">
+        <% if (locals.currentUser) { %>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof page !== 'undefined' && page === 'dashboard' ? 'active text-primary fw-semibold' : 'text-light-emphasis' %>" href="/dashboard">
+              <i class="bi bi-speedometer2 me-1"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof page !== 'undefined' && page === 'tasks' ? 'active text-primary fw-semibold' : 'text-light-emphasis' %>" href="/tasks">
+              <i class="bi bi-list-task me-1"></i> Tasks
+            </a>
+          </li>
+        <% } %>
+        <li class="nav-item">
+          <a class="nav-link <%= typeof page !== 'undefined' && page === 'weather' ? 'active text-primary fw-semibold' : 'text-light-emphasis' %>" href="/weather">
+            <i class="bi bi-cloud-sun me-1"></i> Weather API
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= typeof page !== 'undefined' && page === 'docs' ? 'active text-primary fw-semibold' : 'text-light-emphasis' %>" href="/docs">
+            <i class="bi bi-journal-code me-1"></i> Task 1–8 Docs
+          </a>
+        </li>
+      </ul>
+
+      <!-- Right Side User Controls -->
+      <div class="d-flex align-items-center gap-2">
+        <% if (locals.currentUser) { %>
+          <div class="dropdown">
+            <button class="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center gap-2 px-3 py-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="avatar-circle bg-primary text-white"><%= locals.currentUser.name.charAt(0).toUpperCase() %></span>
+              <span class="d-none d-sm-inline fw-medium"><%= locals.currentUser.name %></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+              <li>
+                <div class="dropdown-header">
+                  <div class="fw-bold text-dark"><%= locals.currentUser.name %></div>
+                  <div class="text-muted small text-truncate" style="max-width: 180px;"><%= locals.currentUser.email %></div>
+                </div>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item d-flex align-items-center gap-2" href="/profile"><i class="bi bi-person text-primary"></i> Profile & Settings</a></li>
+              <li><a class="dropdown-item d-flex align-items-center gap-2" href="/tasks/new"><i class="bi bi-plus-circle text-success"></i> Create Task</a></li>
+              <li><a class="dropdown-item d-flex align-items-center gap-2" href="/docs"><i class="bi bi-journal-check text-info"></i> Internship Audit</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <form action="/logout" method="POST" class="m-0 p-0">
+                  <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
+                    <i class="bi bi-box-arrow-right"></i> Sign Out
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+          <a href="/tasks/new" class="btn btn-primary btn-sm d-flex align-items-center gap-1 shadow-sm px-3">
+            <i class="bi bi-plus-lg"></i>
+            <span class="d-none d-md-inline">New Task</span>
+          </a>
+        <% } else { %>
+          <a href="/login" class="btn btn-outline-light btn-sm px-3">Sign In</a>
+          <a href="/register" class="btn btn-primary btn-sm px-3 shadow-sm">Get Started</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

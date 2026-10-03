@@ -1,0 +1,6 @@
+{
+  "name": "TaskFlow – Full Stack Task Management System",
+  "description": "Production full stack task management system built with Node.js, Express, MongoDB, Redis, JWT auth, external weather API, and modern responsive UI for Cognifyz internship.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,132 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="container my-5 flex-grow-1">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5 col-xl-4">
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+        <div class="text-center mb-4">
+          <div class="bg-primary-subtle text-primary rounded-circle d-inline-flex p-3 mb-2">
+            <i class="bi bi-box-arrow-in-right fs-3"></i>
+          </div>
+          <h2 class="fw-bold tracking-tight mb-1">Welcome Back</h2>
+          <p class="text-secondary small">Sign in with your TaskFlow credentials</p>
+        </div>
+
+        <% if (typeof registered !== 'undefined' && registered) { %>
+          <div class="alert alert-success alert-dismissible fade show shadow-xs border-0 small d-flex align-items-center gap-2" role="alert">
+            <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i>
+            <div>Registration successful! You may now sign in.</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        <% } %>
+
+        <% if (typeof loggedOut !== 'undefined' && loggedOut) { %>
+          <div class="alert alert-info alert-dismissible fade show shadow-xs border-0 small d-flex align-items-center gap-2" role="alert">
+            <i class="bi bi-info-circle-fill text-info flex-shrink-0"></i>
+            <div>You have signed out successfully.</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        <% } %>
+
+        <%- include('../partials/alerts') %>
+
+        <!-- Demo Account Auto-Fill Callout -->
+        <div class="bg-light border border-secondary-subtle rounded-3 p-3 mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="small fw-bold text-dark"><i class="bi bi-person-badge text-primary me-1"></i> Demo Credentials</span>
+            <button type="button" class="btn btn-xs btn-outline-primary py-0 px-2" id="fillDemoBtn" style="font-size: 0.75rem;">
+              Auto-Fill
+            </button>
+          </div>
+          <div class="small text-muted font-monospace" style="font-size: 0.8rem;">
+            Email: <strong>demo@taskflow.dev</strong><br/>
+            Password: <strong>Password123!</strong>
+          </div>
+        </div>
+
+        <!-- Login Form (Task 1 & Task 6) -->
+        <form action="/login" method="POST" id="loginForm" novalidate>
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label small fw-semibold text-dark">Email Address</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-secondary border-end-0"><i class="bi bi-envelope"></i></span>
+              <input
+                type="email"
+                class="form-control border-start-0"
+                id="loginEmail"
+                name="email"
+                placeholder="name@taskflow.dev"
+                value="<%= typeof values !== 'undefined' && values.email ? values.email : '' %>"
+                required
+              />
+            </div>
+            <div class="invalid-feedback">Please enter a valid email address.</div>
+          </div>
+
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <label for="loginPassword" class="form-label small fw-semibold text-dark mb-0">Password</label>
+            </div>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-secondary border-end-0"><i class="bi bi-lock"></i></span>
+              <input
+                type="password"
+                class="form-control border-start-0 border-end-0"
+                id="loginPassword"
+                name="password"
+                placeholder="••••••••"
+                required
+              />
+              <button class="btn btn-light border border-start-0 text-secondary" type="button" id="toggleLoginPasswordBtn">
+                <i class="bi bi-eye" id="toggleLoginPasswordIcon"></i>
+              </button>
+            </div>
+            <div class="invalid-feedback">Password is required.</div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2">
+            <i class="bi bi-box-arrow-in-right"></i> Sign In to TaskFlow
+          </button>
+        </form>
+
+        <div class="text-center mt-4 pt-3 border-top">
+          <span class="text-muted small">Don't have an account yet?</span>
+          <a href="/register" class="text-primary small fw-semibold text-decoration-none ms-1">Create Account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  // Demo autofill script
+  document.getElementById('fillDemoBtn')?.addEventListener('click', function() {
+    const emailInput = document.getElementById('loginEmail');
+    const passInput = document.getElementById('loginPassword');
+    if (emailInput && passInput) {
+      emailInput.value = 'demo@taskflow.dev';
+      passInput.value = 'Password123!';
+      emailInput.classList.remove('is-invalid');
+      passInput.classList.remove('is-invalid');
+    }
+  });
+
+  // Password visibility toggle
+  const toggleBtn = document.getElementById('toggleLoginPasswordBtn');
+  const passInput = document.getElementById('loginPassword');
+  const toggleIcon = document.getElementById('toggleLoginPasswordIcon');
+  if (toggleBtn && passInput && toggleIcon) {
+    toggleBtn.addEventListener('click', function() {
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+      } else {
+        passInput.type = 'password';
+        toggleIcon.classList.replace('bi-eye-slash', 'bi-eye');
+      }
+    });
+  }
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,22 @@
+<% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill fs-5 text-danger flex-shrink-0"></i>
+    <div>
+      <strong>Validation Alert:</strong> Please correct the following issues:
+      <ul class="mb-0 mt-1 ps-3">
+        <% errors.forEach(function(err) { %>
+          <li><%= err.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (typeof successMsg !== 'undefined' && successMsg) { %>
+  <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 mb-4" role="alert">
+    <i class="bi bi-check-circle-fill fs-5 text-success flex-shrink-0"></i>
+    <div><%= successMsg %></div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>

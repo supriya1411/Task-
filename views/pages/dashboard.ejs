@@ -1,0 +1,378 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar Partial (Task 3) -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- Main Content Area -->
+    <main class="col-12 col-md-9 col-lg-10 px-md-4 py-4">
+      <!-- Welcome Header -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pb-3 mb-4 border-bottom">
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <h1 class="h3 fw-bold text-dark mb-0">System Dashboard</h1>
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Cognifyz Internship</span>
+          </div>
+          <p class="text-secondary small mb-0 mt-1">
+            Welcome back, <strong><%= user.name %></strong> &bull; Full Stack Task Management & Analytics Engine
+          </p>
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <!-- BullMQ / Redis Background Job Action Button (Task 8) -->
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-cpu text-primary"></i>
+              <span>Queue Background Job</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+              <li><h6 class="dropdown-header">BullMQ / Async Workers</h6></li>
+              <li>
+                <button class="dropdown-item d-flex align-items-center gap-2 trigger-job-btn" data-job="GENERATE_SUMMARY_REPORT">
+                  <i class="bi bi-file-earmark-bar-graph text-primary"></i> Generate Analytics Report
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item d-flex align-items-center gap-2 trigger-job-btn" data-job="TASK_DUE_REMINDER">
+                  <i class="bi bi-bell-fill text-warning"></i> Run Deadline Reminder Scan
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item d-flex align-items-center gap-2 trigger-job-btn" data-job="EXPORT_TASKS_CSV">
+                  <i class="bi bi-filetype-csv text-success"></i> Background CSV Export
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <a href="/tasks/new" class="btn btn-primary btn-sm d-flex align-items-center gap-1 shadow-sm px-3">
+            <i class="bi bi-plus-lg"></i>
+            <span>Create Task</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- System Infrastructure Status Strip (Task 6, 7, 8) -->
+      <div class="row g-2 mb-4">
+        <div class="col-12 col-md-4">
+          <div class="bg-white p-2 px-3 rounded-3 border d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-database text-success fs-5"></i>
+              <div>
+                <div class="fs-8 text-secondary text-uppercase fw-bold">Database Engine</div>
+                <div class="small fw-semibold text-dark"><%= dbStatus.client %></div>
+              </div>
+            </div>
+            <span class="badge bg-success-subtle text-success">Connected</span>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="bg-white p-2 px-3 rounded-3 border d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-lightning-charge text-danger fs-5"></i>
+              <div>
+                <div class="fs-8 text-secondary text-uppercase fw-bold">Redis Cache Layer</div>
+                <div class="small fw-semibold text-dark">Mode: <%= cacheMetrics.storeType.toUpperCase() %> (<%= cacheMetrics.hits %> Hits / <%= cacheMetrics.misses %> Misses)</div>
+              </div>
+            </div>
+            <span class="badge bg-primary-subtle text-primary">Active</span>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="bg-white p-2 px-3 rounded-3 border d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-cloud-check text-info fs-5"></i>
+              <div>
+                <div class="fs-8 text-secondary text-uppercase fw-bold">External API</div>
+                <div class="small fw-semibold text-dark">Open-Meteo Meteorological</div>
+              </div>
+            </div>
+            <span class="badge bg-info-subtle text-info">Rate Limited</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Core Statistics Cards (Task 3 Requirement) -->
+      <div class="row g-3 mb-4">
+        <!-- 1. Total Tasks -->
+        <div class="col-6 col-lg-3">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="text-secondary small fw-medium">Total Tasks</span>
+              <div class="bg-primary-subtle text-primary rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                <i class="bi bi-collection fs-5"></i>
+              </div>
+            </div>
+            <div class="fs-2 fw-bold text-dark"><%= stats.total %></div>
+            <div class="small text-muted mt-1 d-flex align-items-center gap-1">
+              <i class="bi bi-layers text-secondary"></i> All registered tasks
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Completed Tasks -->
+        <div class="col-6 col-lg-3">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="text-secondary small fw-medium">Completed</span>
+              <div class="bg-success-subtle text-success rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                <i class="bi bi-check2-circle fs-5"></i>
+              </div>
+            </div>
+            <div class="fs-2 fw-bold text-success"><%= stats.completed %></div>
+            <div class="small text-muted mt-1 d-flex align-items-center gap-1">
+              <i class="bi bi-graph-up-arrow text-success"></i> <%= stats.completionRate %>% completion rate
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Pending Tasks -->
+        <div class="col-6 col-lg-3">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="text-secondary small fw-medium">Pending Tasks</span>
+              <div class="bg-warning-subtle text-warning rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                <i class="bi bi-hourglass-split fs-5"></i>
+              </div>
+            </div>
+            <div class="fs-2 fw-bold text-warning"><%= stats.pending + stats.inProgress %></div>
+            <div class="small text-muted mt-1 d-flex align-items-center gap-1">
+              <i class="bi bi-clock-history text-warning"></i> <%= stats.inProgress %> in progress
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. High Priority Tasks -->
+        <div class="col-6 col-lg-3">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="text-secondary small fw-medium">High / Urgent</span>
+              <div class="bg-danger-subtle text-danger rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                <i class="bi bi-fire fs-5"></i>
+              </div>
+            </div>
+            <div class="fs-2 fw-bold text-danger"><%= stats.highPriority %></div>
+            <div class="small text-muted mt-1 d-flex align-items-center gap-1">
+              <i class="bi bi-exclamation-circle text-danger"></i> Requires immediate focus
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second Row: Weather Widget & Completion Progress -->
+      <div class="row g-4 mb-4">
+        <!-- Weather Information Widget (Task 7 Requirement) -->
+        <div class="col-12 col-lg-5">
+          <div class="card border-0 shadow-xs rounded-4 bg-white h-100 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="d-flex align-items-center gap-2">
+                <div class="bg-info-subtle text-info rounded p-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                  <i class="bi bi-cloud-sun fs-5"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold mb-0 text-dark">Live Weather Integration</h6>
+                  <span class="small text-muted">Real Backend External API (Task 7)</span>
+                </div>
+              </div>
+              <a href="/weather" class="btn btn-xs btn-outline-primary py-1 px-2" style="font-size: 0.75rem;">
+                Explore API &rarr;
+              </a>
+            </div>
+
+            <!-- Current Weather Display -->
+            <div class="p-3 bg-gradient-weather rounded-3 border border-info-subtle mb-3" id="weatherDashboardCard">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fs-3 fw-extrabold text-dark d-flex align-items-center gap-2">
+                    <span id="dashWeatherCity"><%= weather.city %></span>
+                    <% if (weather.country) { %><span class="badge bg-light text-secondary border fs-8"><%= weather.country %></span><% } %>
+                  </div>
+                  <div class="text-secondary small fw-medium" id="dashWeatherCond"><%= weather.condition %></div>
+                </div>
+                <div class="display-6" id="dashWeatherIcon"><%= weather.icon %></div>
+              </div>
+
+              <div class="d-flex align-items-baseline gap-2 my-2">
+                <span class="display-5 fw-bold text-dark" id="dashWeatherTemp"><%= weather.temperature %>°C</span>
+                <span class="text-secondary small" id="dashWeatherTempF">(<%= weather.temperatureF %>°F)</span>
+              </div>
+
+              <div class="row g-2 pt-2 border-top border-info-subtle small text-secondary">
+                <div class="col-6 d-flex align-items-center gap-1">
+                  <i class="bi bi-droplet text-primary"></i> Humidity: <strong class="text-dark" id="dashWeatherHumidity"><%= weather.humidity %>%</strong>
+                </div>
+                <div class="col-6 d-flex align-items-center gap-1">
+                  <i class="bi bi-wind text-secondary"></i> Wind: <strong class="text-dark" id="dashWeatherWind"><%= weather.windSpeed %> km/h</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fast City Switcher via AJAX -->
+            <div class="d-flex align-items-center gap-2">
+              <input type="text" class="form-control form-control-sm" id="quickCityInput" placeholder="Quick change city (e.g. London, Tokyo)" />
+              <button class="btn btn-outline-secondary btn-sm px-3" id="quickCityBtn" type="button">Update</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress & Category Distribution -->
+        <div class="col-12 col-lg-7">
+          <div class="card border-0 shadow-xs rounded-4 bg-white h-100 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h6 class="fw-bold mb-0 text-dark">Completion Progress & Work Breakdown</h6>
+                <span class="small text-muted">Real-time status calculated from MongoDB</span>
+              </div>
+              <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-1">
+                <%= stats.completionRate %>% Complete
+              </span>
+            </div>
+
+            <div class="progress mb-4" style="height: 12px; border-radius: 8px;">
+              <div class="progress-bar bg-success" role="progressbar" style="width: <%= stats.completionRate %>%;" aria-valuenow="<%= stats.completionRate %>" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <div class="row g-3 pt-2">
+              <% const catKeys = Object.keys(stats.categories || {}); %>
+              <% if (catKeys.length > 0) { %>
+                <% catKeys.forEach(function(cat) { %>
+                  <div class="col-6 col-sm-4">
+                    <div class="p-2 border rounded-3 bg-light d-flex justify-content-between align-items-center">
+                      <span class="small fw-semibold text-secondary"><%= cat %></span>
+                      <span class="badge bg-dark rounded-pill"><%= stats.categories[cat] %></span>
+                    </div>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <div class="col-12 text-muted small">No task category distribution available yet.</div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Third Row: Recent Tasks (Task 3 Requirement) & Background Job Status -->
+      <div class="row g-4">
+        <!-- Recent Tasks Table -->
+        <div class="col-12 col-lg-8">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h6 class="fw-bold mb-0 text-dark">Recent Tasks</h6>
+                <span class="small text-muted">Latest 5 tasks created in your workspace</span>
+              </div>
+              <a href="/tasks" class="btn btn-sm btn-outline-primary">View All Tasks &rarr;</a>
+            </div>
+
+            <% if (stats.recentTasks && stats.recentTasks.length > 0) { %>
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light fs-8 text-uppercase text-secondary">
+                    <tr>
+                      <th>Title</th>
+                      <th>Priority</th>
+                      <th>Status</th>
+                      <th>Category</th>
+                      <th class="text-end">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% stats.recentTasks.forEach(function(task) { %>
+                      <tr>
+                        <td>
+                          <div class="fw-semibold text-dark text-truncate" style="max-width: 220px;"><%= task.title %></div>
+                          <% if (task.deadline) { %>
+                            <div class="text-muted fs-8">Due: <%= new Date(task.deadline).toLocaleDateString() %></div>
+                          <% } %>
+                        </td>
+                        <td>
+                          <% if (task.priority === 'Urgent') { %>
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Urgent</span>
+                          <% } else if (task.priority === 'High') { %>
+                            <span class="badge bg-danger text-white">High</span>
+                          <% } else if (task.priority === 'Medium') { %>
+                            <span class="badge bg-warning-subtle text-dark border border-warning-subtle">Medium</span>
+                          <% } else { %>
+                            <span class="badge bg-secondary-subtle text-secondary">Low</span>
+                          <% } %>
+                        </td>
+                        <td>
+                          <% if (task.status === 'Completed') { %>
+                            <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-check2"></i> Completed</span>
+                          <% } else if (task.status === 'In Progress') { %>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle"><i class="bi bi-arrow-repeat"></i> In Progress</span>
+                          <% } else { %>
+                            <span class="badge bg-warning-subtle text-dark border border-warning-subtle"><i class="bi bi-hourglass"></i> Pending</span>
+                          <% } %>
+                        </td>
+                        <td>
+                          <span class="badge bg-light text-dark border"><%= task.category %></span>
+                        </td>
+                        <td class="text-end">
+                          <a href="/tasks/<%= task._id %>/edit" class="btn btn-xs btn-outline-secondary py-1 px-2" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+              </div>
+            <% } else { %>
+              <div class="text-center py-4 bg-light rounded-3">
+                <i class="bi bi-clipboard2-check fs-2 text-muted mb-2 d-block"></i>
+                <p class="text-muted mb-2">No tasks created yet.</p>
+                <a href="/tasks/new" class="btn btn-sm btn-primary">Create Your First Task</a>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Background Jobs Log (Task 8 Requirement) -->
+        <div class="col-12 col-lg-4">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h6 class="fw-bold mb-0 text-dark">Background Jobs Queue</h6>
+                <span class="small text-muted">BullMQ & Async Workers</span>
+              </div>
+              <span class="badge bg-secondary-subtle text-secondary" id="jobCountBadge"><%= recentJobs.length %> Jobs</span>
+            </div>
+
+            <div id="jobHistoryList" class="d-flex flex-column gap-2" style="max-height: 280px; overflow-y: auto;">
+              <% if (recentJobs && recentJobs.length > 0) { %>
+                <% recentJobs.forEach(function(job) { %>
+                  <div class="p-2 border rounded-3 bg-light">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <span class="fw-semibold small text-dark"><%= job.name %></span>
+                      <span class="badge <%= job.status === 'completed' ? 'bg-success-subtle text-success' : (job.status === 'active' ? 'bg-primary-subtle text-primary' : 'bg-secondary-subtle text-secondary') %>">
+                        <%= job.status %>
+                      </span>
+                    </div>
+                    <div class="fs-8 text-muted font-monospace"><%= job.id %></div>
+                    <% if (job.result && job.result.message) { %>
+                      <div class="fs-8 text-secondary mt-1"><%= job.result.message %></div>
+                    <% } %>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <div class="text-center py-4 text-muted small" id="noJobsMsg">
+                  No background jobs queued. Use the top menu to dispatch asynchronous jobs.
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Dashboard client interactions -->
+<script src="/js/dashboard-client.js"></script>
+
+<%- include('../partials/footer') %>

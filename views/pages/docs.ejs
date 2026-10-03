@@ -1,0 +1,355 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="container my-5 flex-grow-1">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pb-3 mb-4 border-bottom">
+    <div>
+      <div class="d-flex align-items-center gap-2">
+        <h1 class="h3 fw-bold text-dark mb-0">Internship Project Audit: Tasks 1–8</h1>
+        <span class="badge bg-success-subtle text-success border border-success-subtle">Cognifyz Full Stack</span>
+      </div>
+      <p class="text-secondary small mb-0 mt-1">
+        Comprehensive engineering documentation, API endpoints catalog, architectural design, and evidence checklist.
+      </p>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+      <a href="/dashboard" class="btn btn-outline-secondary btn-sm">Dashboard</a>
+      <a href="/tasks" class="btn btn-primary btn-sm">Open Task System</a>
+    </div>
+  </div>
+
+  <!-- Quick Status Strip -->
+  <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+    <div class="row g-3 align-items-center">
+      <div class="col-12 col-md-3">
+        <div class="text-secondary small fw-medium">Project Name</div>
+        <div class="fw-bold text-dark">TaskFlow</div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="text-secondary small fw-medium">Database Layer</div>
+        <div class="fw-semibold text-dark"><%= dbStatus.client %></div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="text-secondary small fw-medium">Cache Layer (Redis)</div>
+        <div class="fw-semibold text-dark"><%= cacheMetrics.storeType.toUpperCase() %> (<%= cacheMetrics.hits %> Hits / <%= cacheMetrics.misses %> Misses)</div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="text-secondary small fw-medium">Internship Verification</div>
+        <div><span class="badge bg-success text-white">100% Complete (8/8 Tasks)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task 1 to 8 Progressive Matrix -->
+  <div class="row g-4 mb-5">
+    <!-- Task 1 -->
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-primary text-white">Task 1</span>
+          <span class="badge bg-success-subtle text-success">Verified</span>
+        </div>
+        <h5 class="fw-bold text-dark">HTML Forms, Express Server & EJS Rendering</h5>
+        <p class="text-secondary small">
+          Created semantic HTML5 landing page, registration, login, and task management forms. Built modular Express.js routes handling HTTP POST requests and server-side rendering with EJS templates and reusable partials.
+        </p>
+        <div class="bg-light p-2 rounded-3 font-monospace fs-8 text-secondary">
+          Files: server.ts, views/pages/landing.ejs, register.ejs, login.ejs, routes/pageRoutes.ts
+        </div>
+      </div>
+    </div>
+
+    <!-- Task 2 -->
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-primary text-white">Task 2</span>
+          <span class="badge bg-success-subtle text-success">Verified</span>
+        </div>
+        <h5 class="fw-bold text-dark">Client & Server-Side Input Validation</h5>
+        <p class="text-secondary small">
+          Engineered multi-tier validation: instant client feedback for required inputs, email pattern verification, phone format checks, password strength calculation (entropy, length, uppercase, lowercase, numbers), and server-side validation middleware with clean error responses.
+        </p>
+        <div class="bg-light p-2 rounded-3 font-monospace fs-8 text-secondary">
+          Files: middleware/validationMiddleware.ts, public/js/validation.js
+        </div>
+      </div>
+    </div>
+
+    <!-- Task 3 -->
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-primary text-white">Task 3</span>
+          <span class="badge bg-success-subtle text-success">Verified</span>
+        </div>
+        <h5 class="fw-bold text-dark">Responsive UI, Cards & Dashboard Layout</h5>
+        <p class="text-secondary small">
+          Designed a modern interface with Bootstrap 5.3, CSS Grid/Flexbox, transitions, and collapsible navigation. The dashboard showcases key statistics (Total, Completed, Pending, High Priority), dynamic progress meters, and task breakdowns across desktop, tablet, and mobile.
+        </p>
+        <div class="bg-light p-2 rounded-3 font-monospace fs-8 text-secondary">
+          Files: views/pages/dashboard.ejs, views/partials/sidebar.ejs, public/css/custom.css
+        </div>
+      </div>
+    </div>
+
+    <!-- Task 4 -->
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-primary text-white">Task 4</span>
+          <span class="badge bg-success-subtle text-success">Verified</span>
+        </div>
+        <h5 class="fw-bold text-dark">Advanced JavaScript & DOM Manipulation</h5>
+        <p class="text-secondary small">
+          Implemented complex DOM manipulation without page reloads: live instant search, multi-criteria filtering (status, priority, category), real-time sorting, view switching (grid/table), asynchronous delete modal with confirmation, and instant status updates.
+        </p>
+        <div class="bg-light p-2 rounded-3 font-monospace fs-8 text-secondary">
+          Files: public/js/tasks-client.js, views/pages/tasks.ejs
+        </div>
+      </div>
+    </div>
+
+    <!-- Task 5 -->
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-primary text-white">Task 5</span>
+          <span class="badge bg-success-subtle text-success">Verified</span>
+        </div>
+        <h5 class="fw-bold text-dark">Complete RESTful CRUD API</h5>
+        <p class="text-secondary small">
+          Created full REST endpoints conforming to HTTP standards: POST /api/tasks (201), GET /api/tasks (200), GET /api/tasks/:id (200), PUT /api/tasks/:id (200), DELETE /api/tasks/:id (200), with robust JSON responses and HTTP status codes.
+        </p>
+        <div class="bg-light p-2 rounded-3 font-monospace fs-8 text-secondary">
+          Files: controllers/taskController.ts, routes/taskRoutes.ts, services/taskService.ts
+        </div>
+      </div>
+    </div>
+
+    <!-- Task 6 -->
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-primary text-white">Task 6</span>
+          <span class="badge bg-success-subtle text-success">Verified</span>
+        </div>
+        <h5 class="fw-bold text-dark">MongoDB, bcrypt Hashing & JWT Authorization</h5>
+        <p class="text-secondary small">
+          Implemented Mongoose User and Task schemas, bcrypt password hashing (10 salt rounds), JWT authentication middleware (cookies & Bearer headers), protected routes, and strict data isolation so users can strictly only access and mutate their own tasks.
+        </p>
+        <div class="bg-light p-2 rounded-3 font-monospace fs-8 text-secondary">
+          Files: models/User.ts, models/Task.ts, middleware/authMiddleware.ts, services/authService.ts
+        </div>
+      </div>
+    </div>
+
+    <!-- Task 7 -->
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-primary text-white">Task 7</span>
+          <span class="badge bg-success-subtle text-success">Verified</span>
+        </div>
+        <h5 class="fw-bold text-dark">Real External Weather API & OAuth Architecture</h5>
+        <p class="text-secondary small">
+          Connected live backend Open-Meteo REST service with 5000ms AbortController timeout guard, rate limiting (50 queries / 10m), Redis caching (15m TTL), city geocoding, dashboard integration, and fully documented OAuth 2.0 PKCE architecture.
+        </p>
+        <div class="bg-light p-2 rounded-3 font-monospace fs-8 text-secondary">
+          Files: services/weatherService.ts, controllers/weatherController.ts, views/pages/weather.ejs
+        </div>
+      </div>
+    </div>
+
+    <!-- Task 8 -->
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-primary text-white">Task 8</span>
+          <span class="badge bg-success-subtle text-success">Verified</span>
+        </div>
+        <h5 class="fw-bold text-dark">Redis Caching, BullMQ Queue & Middleware</h5>
+        <p class="text-secondary small">
+          Implemented cache-aside pattern on GET /api/tasks, automatic cache invalidation upon create/update/delete, BullMQ / asynchronous queue processing background jobs (analytics report, reminder scans, CSV export), custom request logging, and centralized error handling.
+        </p>
+        <div class="bg-light p-2 rounded-3 font-monospace fs-8 text-secondary">
+          Files: config/redis.ts, services/cacheService.ts, jobs/taskQueue.ts, middleware/loggerMiddleware.ts
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REST API Catalog Table -->
+  <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+    <h5 class="fw-bold text-dark mb-3">REST API Endpoints Catalog</h5>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0 small">
+        <thead class="table-light">
+          <tr>
+            <th>Method</th>
+            <th>Endpoint</th>
+            <th>Auth Required</th>
+            <th>Cache / Performance</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge bg-success">GET</span></td>
+            <td class="font-monospace">/api/tasks</td>
+            <td><span class="badge bg-dark">Bearer / Cookie</span></td>
+            <td><span class="badge bg-primary-subtle text-primary">Redis Cache-Aside</span></td>
+            <td>Retrieves all tasks for the logged in user with search, filter, and sorting.</td>
+          </tr>
+          <tr>
+            <td><span class="badge bg-primary">POST</span></td>
+            <td class="font-monospace">/api/tasks</td>
+            <td><span class="badge bg-dark">Bearer / Cookie</span></td>
+            <td><span class="badge bg-danger-subtle text-danger">Cache Invalidated</span></td>
+            <td>Creates a new task and invalidates the user's task cache.</td>
+          </tr>
+          <tr>
+            <td><span class="badge bg-success">GET</span></td>
+            <td class="font-monospace">/api/tasks/:id</td>
+            <td><span class="badge bg-dark">Bearer / Cookie</span></td>
+            <td>-</td>
+            <td>Retrieves a single task by ID with authorization verification.</td>
+          </tr>
+          <tr>
+            <td><span class="badge bg-warning text-dark">PUT</span></td>
+            <td class="font-monospace">/api/tasks/:id</td>
+            <td><span class="badge bg-dark">Bearer / Cookie</span></td>
+            <td><span class="badge bg-danger-subtle text-danger">Cache Invalidated</span></td>
+            <td>Updates a task and invalidates the user's task cache.</td>
+          </tr>
+          <tr>
+            <td><span class="badge bg-danger">DELETE</span></td>
+            <td class="font-monospace">/api/tasks/:id</td>
+            <td><span class="badge bg-dark">Bearer / Cookie</span></td>
+            <td><span class="badge bg-danger-subtle text-danger">Cache Invalidated</span></td>
+            <td>Deletes a task and invalidates the user's task cache.</td>
+          </tr>
+          <tr>
+            <td><span class="badge bg-success">GET</span></td>
+            <td class="font-monospace">/api/weather</td>
+            <td>Public</td>
+            <td><span class="badge bg-info-subtle text-info">15m TTL Cache</span></td>
+            <td>Fetches live meteorological data with 5s timeout & rate limiting.</td>
+          </tr>
+          <tr>
+            <td><span class="badge bg-primary">POST</span></td>
+            <td class="font-monospace">/api/jobs</td>
+            <td><span class="badge bg-dark">Bearer / Cookie</span></td>
+            <td><span class="badge bg-warning-subtle text-dark">BullMQ Worker</span></td>
+            <td>Enqueues background jobs for analytics reports, reminders, or CSV exports.</td>
+          </tr>
+          <tr>
+            <td><span class="badge bg-primary">POST</span></td>
+            <td class="font-monospace">/api/auth/register</td>
+            <td>Public</td>
+            <td><span class="badge bg-secondary-subtle text-secondary">Rate Limited</span></td>
+            <td>Registers a user with bcrypt 10 salt rounds and returns JWT.</td>
+          </tr>
+          <tr>
+            <td><span class="badge bg-primary">POST</span></td>
+            <td class="font-monospace">/api/auth/login</td>
+            <td>Public</td>
+            <td><span class="badge bg-secondary-subtle text-secondary">Rate Limited</span></td>
+            <td>Authenticates credentials and sets HTTP-Only JWT cookie.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Screenshot Checklist for Internship Submission -->
+  <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+    <div class="d-flex align-items-center gap-2 mb-3">
+      <div class="bg-primary-subtle text-primary rounded p-2">
+        <i class="bi bi-camera-fill fs-5"></i>
+      </div>
+      <div>
+        <h5 class="fw-bold text-dark mb-0">Internship Submission Evidence & Screenshot Checklist</h5>
+        <span class="small text-muted">Use this checklist to capture required evidence for Tasks 1 through 8</span>
+      </div>
+    </div>
+
+    <div class="list-group list-group-flush border-top">
+      <div class="list-group-item px-0 py-3">
+        <div class="d-flex align-items-center gap-2">
+          <input class="form-check-input mt-0" type="checkbox" checked disabled>
+          <div>
+            <div class="fw-bold text-dark">Screenshot 1: Landing Page & EJS Rendered HTML Forms (Task 1)</div>
+            <div class="small text-muted">Navigate to <code>/</code> and <code>/register</code> to capture clean landing and form layout.</div>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item px-0 py-3">
+        <div class="d-flex align-items-center gap-2">
+          <input class="form-check-input mt-0" type="checkbox" checked disabled>
+          <div>
+            <div class="fw-bold text-dark">Screenshot 2: Client & Server-side Validation with Password Strength (Task 2)</div>
+            <div class="small text-muted">On <code>/register</code>, enter weak password to capture colored strength bar and error alerts.</div>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item px-0 py-3">
+        <div class="d-flex align-items-center gap-2">
+          <input class="form-check-input mt-0" type="checkbox" checked disabled>
+          <div>
+            <div class="fw-bold text-dark">Screenshot 3: Dashboard Layout, Statistics & Responsive Sidebar (Task 3)</div>
+            <div class="small text-muted">On <code>/dashboard</code>, capture Total, Completed, Pending, and High Priority cards with progress bar.</div>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item px-0 py-3">
+        <div class="d-flex align-items-center gap-2">
+          <input class="form-check-input mt-0" type="checkbox" checked disabled>
+          <div>
+            <div class="fw-bold text-dark">Screenshot 4: Dynamic Search, Multi-Filter & Delete Modal (Task 4)</div>
+            <div class="small text-muted">On <code>/tasks</code>, demonstrate search keyword filtering and opening the delete confirmation dialog.</div>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item px-0 py-3">
+        <div class="d-flex align-items-center gap-2">
+          <input class="form-check-input mt-0" type="checkbox" checked disabled>
+          <div>
+            <div class="fw-bold text-dark">Screenshot 5: REST API Execution & HTTP Status Codes (Task 5)</div>
+            <div class="small text-muted">Open DevTools Network tab or Postman to show GET /api/tasks (200) and POST /api/tasks (201).</div>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item px-0 py-3">
+        <div class="d-flex align-items-center gap-2">
+          <input class="form-check-input mt-0" type="checkbox" checked disabled>
+          <div>
+            <div class="fw-bold text-dark">Screenshot 6: MongoDB User & Task Isolation with JWT Auth (Task 6)</div>
+            <div class="small text-muted">On <code>/profile</code>, show MongoDB _id, bcrypt 10 rounds confirmation, and JWT session status.</div>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item px-0 py-3">
+        <div class="d-flex align-items-center gap-2">
+          <input class="form-check-input mt-0" type="checkbox" checked disabled>
+          <div>
+            <div class="fw-bold text-dark">Screenshot 7: External Weather API Live Integration (Task 7)</div>
+            <div class="small text-muted">On <code>/weather</code>, show city temperature, condition, humidity, wind, and OAuth architecture.</div>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item px-0 py-3">
+        <div class="d-flex align-items-center gap-2">
+          <input class="form-check-input mt-0" type="checkbox" checked disabled>
+          <div>
+            <div class="fw-bold text-dark">Screenshot 8: Redis Cache HIT / MISS & Background BullMQ Queue (Task 8)</div>
+            <div class="small text-muted">Show <code>X-Cache-Status: HIT</code> in response headers and the completed background jobs list on Dashboard.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

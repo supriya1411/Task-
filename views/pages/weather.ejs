@@ -1,0 +1,205 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="container my-5 flex-grow-1">
+  <!-- Page Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pb-3 mb-4 border-bottom">
+    <div>
+      <div class="d-flex align-items-center gap-2">
+        <h1 class="h3 fw-bold text-dark mb-0">External Meteorological API & OAuth Architecture</h1>
+        <span class="badge bg-info-subtle text-info border border-info-subtle">Task 7 Implementation</span>
+      </div>
+      <p class="text-secondary small mb-0 mt-1">
+        Real backend weather integration via Open-Meteo REST API with Redis caching, timeout guard, rate limiting, and OAuth 2.0 specification.
+      </p>
+    </div>
+
+    <% if (locals.currentUser) { %>
+      <a href="/dashboard" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+      </a>
+    <% } %>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <!-- Live Weather Search & Display Card -->
+    <div class="col-12 col-lg-7">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold text-dark mb-0">Live City Weather Search</h5>
+          <span class="badge bg-secondary-subtle text-secondary" id="weatherSourceBadge"><%= weather.source %></span>
+        </div>
+
+        <!-- City Search Input -->
+        <form id="weatherSearchForm" class="mb-3">
+          <div class="input-group">
+            <span class="input-group-text bg-light text-secondary border-end-0"><i class="bi bi-geo-alt"></i></span>
+            <input
+              type="text"
+              class="form-control border-start-0"
+              id="weatherCityInput"
+              placeholder="Enter city name (e.g. London, Tokyo, San Francisco, Berlin, Mumbai)..."
+              value="<%= queryCity %>"
+              required
+            />
+            <button class="btn btn-primary px-4 fw-semibold" type="submit" id="searchWeatherBtn">
+              <span class="spinner-border spinner-border-sm d-none me-1" id="weatherSpinner" role="status"></span>
+              <span id="searchBtnText">Fetch Weather</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Quick City Preset Chips -->
+        <div class="d-flex flex-wrap gap-1 mb-4">
+          <span class="small text-muted me-2 align-self-center">Popular:</span>
+          <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill city-chip" data-city="London">London</button>
+          <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill city-chip" data-city="Tokyo">Tokyo</button>
+          <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill city-chip" data-city="Paris">Paris</button>
+          <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill city-chip" data-city="San Francisco">San Francisco</button>
+          <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill city-chip" data-city="Sydney">Sydney</button>
+          <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill city-chip" data-city="Mumbai">Mumbai</button>
+        </div>
+
+        <!-- Dynamic Weather Card -->
+        <div class="p-4 bg-gradient-weather rounded-4 border border-info-subtle mb-3 position-relative overflow-hidden" id="weatherCardDisplay">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <div class="display-6 fw-extrabold text-dark d-flex align-items-center gap-2">
+                <span id="displayCity"><%= weather.city %></span>
+                <% if (weather.country) { %><span class="badge bg-light text-secondary border fs-8" id="displayCountry"><%= weather.country %></span><% } %>
+              </div>
+              <div class="text-secondary fw-semibold mt-1" id="displayCondition"><%= weather.condition %></div>
+            </div>
+            <div class="display-4" id="displayIcon"><%= weather.icon %></div>
+          </div>
+
+          <div class="d-flex align-items-baseline gap-3 my-3">
+            <span class="display-3 fw-black text-dark" id="displayTemp"><%= weather.temperature %>°C</span>
+            <span class="text-secondary fs-5" id="displayTempF">(<%= weather.temperatureF %>°F)</span>
+          </div>
+
+          <div class="row g-3 pt-3 border-top border-info-subtle">
+            <div class="col-6 col-sm-3">
+              <div class="text-secondary fs-8 text-uppercase fw-semibold">Humidity</div>
+              <div class="fs-5 fw-bold text-dark" id="displayHumidity"><%= weather.humidity %>%</div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="text-secondary fs-8 text-uppercase fw-semibold">Wind Speed</div>
+              <div class="fs-5 fw-bold text-dark" id="displayWind"><%= weather.windSpeed %> km/h</div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="text-secondary fs-8 text-uppercase fw-semibold">Cache Layer</div>
+              <div class="fs-5 fw-bold text-dark">
+                <span class="badge <%= weather.cached ? 'bg-success text-white' : 'bg-secondary text-white' %>" id="displayCache">
+                  <%= weather.cached ? 'Redis HIT' : 'API MISS' %>
+                </span>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="text-secondary fs-8 text-uppercase fw-semibold">WMO Code</div>
+              <div class="fs-5 fw-bold text-dark" id="displayWmo"><%= weather.weatherCode %></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info border-0 shadow-xs rounded-3 small mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-info-circle-fill text-info flex-shrink-0"></i>
+          <div>
+            <strong>Backend Proxy:</strong> Requests are dispatched through Node.js Express <code>GET /api/weather?city=...</code> with a 5000ms AbortController timeout guard, Redis caching (15m TTL), and rate limiting.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- API Reference & JSON Schema Card -->
+    <div class="col-12 col-lg-5">
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+        <h5 class="fw-bold text-dark mb-3">REST Endpoint Specification</h5>
+
+        <div class="bg-dark text-light p-3 rounded-3 mb-3 font-monospace small overflow-x-auto">
+          <div class="text-success mb-1"># Curl Example</div>
+          <div>curl -X GET "http://localhost:3000/api/weather?city=London" \</div>
+          <div class="ps-3">-H "Accept: application/json"</div>
+        </div>
+
+        <h6 class="fw-bold text-dark small mb-2">JSON Response Structure</h6>
+        <div class="bg-light border rounded-3 p-3 font-monospace fs-8 text-dark overflow-x-auto mb-3" style="max-height: 220px;">
+<pre class="m-0">{
+  "success": true,
+  "data": {
+    "city": "London",
+    "country": "United Kingdom",
+    "temperature": 18.2,
+    "temperatureF": 64.8,
+    "condition": "Partly Cloudy",
+    "humidity": 58,
+    "windSpeed": 15.3,
+    "weatherCode": 2,
+    "icon": "⛅",
+    "retrievedAt": "2026-10-03T...",
+    "source": "Open-Meteo Global Meteorological API",
+    "cached": true
+  }
+}</pre>
+        </div>
+
+        <div class="card bg-light border-0 rounded-3 p-3">
+          <h6 class="fw-bold text-dark small mb-1"><i class="bi bi-shield-lock text-primary me-1"></i> Rate Limiter & Security Guard</h6>
+          <p class="text-secondary small mb-0">
+            Protected by <code>weatherRateLimiter</code> middleware (50 queries / 10 minutes per IP). Prevents upstream denial-of-service and quota exhaustion.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task 7 Architecture: OAuth 2.0 Architecture Documentation -->
+  <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+    <div class="d-flex align-items-center gap-2 mb-3">
+      <div class="bg-warning-subtle text-warning-emphasis rounded p-2">
+        <i class="bi bi-diagram-3-fill fs-5"></i>
+      </div>
+      <div>
+        <h4 class="fw-bold text-dark mb-0">OAuth 2.0 Architectural Specification (Task 7)</h4>
+        <span class="small text-muted">Secure Authorization Framework Documentation without Mock/Fake Buttons</span>
+      </div>
+    </div>
+
+    <p class="text-secondary">
+      In accordance with strict security standards, third-party OAuth providers (Google, GitHub, WeatherAPI) require a registered client ID, securely stored server secret, and a verified redirect URI whitelist. Below is the production architectural flow implemented for enterprise integration:
+    </p>
+
+    <div class="row g-4 mt-1">
+      <div class="col-12 col-md-4">
+        <div class="p-3 border rounded-3 bg-light h-100">
+          <div class="fw-bold text-dark mb-1"><i class="bi bi-1-circle text-primary me-1"></i> 1. Authorization Request</div>
+          <p class="text-secondary small mb-0">
+            The client application redirects user to the authorization server endpoint with <code>client_id</code>, <code>redirect_uri</code>, <code>scope</code>, and cryptographically random <code>state</code> + <code>code_challenge</code> (PKCE) parameters.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="p-3 border rounded-3 bg-light h-100">
+          <div class="fw-bold text-dark mb-1"><i class="bi bi-2-circle text-primary me-1"></i> 2. Authorization Grant</div>
+          <p class="text-secondary small mb-0">
+            Upon user consent, the provider issues a one-time <code>authorization_code</code> redirected back to <code>/api/auth/oauth/callback</code> on our Node.js backend.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="p-3 border rounded-3 bg-light h-100">
+          <div class="fw-bold text-dark mb-1"><i class="bi bi-3-circle text-primary me-1"></i> 3. Server-to-Server Token Exchange</div>
+          <p class="text-secondary small mb-0">
+            The Express backend securely exchanges the code along with the server-side <code>CLIENT_SECRET</code> directly with the provider token endpoint. Secrets never touch browser client code.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="/js/weather-client.js"></script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,62 @@
+<aside class="col-12 col-md-3 col-lg-2 bg-white border-end py-3 px-2 d-none d-md-block min-vh-100 sidebar-nav shadow-xs">
+  <div class="d-flex flex-column h-100">
+    <div class="px-3 mb-3 text-uppercase text-secondary fw-bold fs-8 tracking-wider">
+      Main Menu
+    </div>
+    <ul class="nav nav-pills flex-column gap-1 mb-auto">
+      <li class="nav-item">
+        <a href="/dashboard" class="nav-link <%= typeof page !== 'undefined' && page === 'dashboard' ? 'active shadow-sm' : 'text-dark' %> d-flex align-items-center gap-2 px-3 py-2 rounded-2">
+          <i class="bi bi-speedometer2 text-primary"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/tasks" class="nav-link <%= typeof page !== 'undefined' && page === 'tasks' ? 'active shadow-sm' : 'text-dark' %> d-flex align-items-center gap-2 px-3 py-2 rounded-2">
+          <i class="bi bi-list-task text-primary"></i>
+          <span>Tasks</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/tasks/new" class="nav-link text-dark d-flex align-items-center gap-2 px-3 py-2 rounded-2">
+          <i class="bi bi-plus-circle text-success"></i>
+          <span>Create Task</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/weather" class="nav-link <%= typeof page !== 'undefined' && page === 'weather' ? 'active shadow-sm' : 'text-dark' %> d-flex align-items-center gap-2 px-3 py-2 rounded-2">
+          <i class="bi bi-cloud-sun text-warning"></i>
+          <span>Weather API</span>
+        </a>
+      </li>
+    </ul>
+
+    <hr class="text-secondary opacity-25 my-3">
+
+    <div class="px-3 mb-2 text-uppercase text-secondary fw-bold fs-8 tracking-wider">
+      Internship Review
+    </div>
+    <ul class="nav nav-pills flex-column gap-1">
+      <li class="nav-item">
+        <a href="/docs" class="nav-link <%= typeof page !== 'undefined' && page === 'docs' ? 'active shadow-sm' : 'text-dark' %> d-flex align-items-center gap-2 px-3 py-2 rounded-2">
+          <i class="bi bi-journal-code text-info"></i>
+          <span>Tasks 1–8 Audit</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/profile" class="nav-link <%= typeof page !== 'undefined' && page === 'profile' ? 'active shadow-sm' : 'text-dark' %> d-flex align-items-center gap-2 px-3 py-2 rounded-2">
+          <i class="bi bi-person-badge text-secondary"></i>
+          <span>Profile & Auth</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="mt-auto p-3 bg-light rounded-3 border border-secondary-subtle">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Cognifyz</span>
+        <span class="small fw-semibold text-dark">Full Stack</span>
+      </div>
+      <div class="small text-muted mb-2">Tasks 1 to 8 integrated into single production app.</div>
+      <a href="/docs" class="btn btn-sm btn-outline-primary w-100 py-1">View Evidence</a>
+    </div>
+  </div>
+</aside>

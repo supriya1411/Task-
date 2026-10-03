@@ -1,0 +1,144 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar Partial -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- Main Content Area -->
+    <main class="col-12 col-md-9 col-lg-10 px-md-4 py-4">
+      <div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom">
+        <div>
+          <h1 class="h3 fw-bold text-dark mb-0">User Profile & Security</h1>
+          <p class="text-secondary small mb-0 mt-1">
+            Account authentication details, JWT session status, and database ownership isolation.
+          </p>
+        </div>
+
+        <form action="/logout" method="POST" class="m-0">
+          <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1">
+            <i class="bi bi-box-arrow-right"></i> Sign Out
+          </button>
+        </form>
+      </div>
+
+      <div class="row g-4">
+        <!-- Account Overview Card -->
+        <div class="col-12 col-lg-5">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-4 h-100">
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div class="avatar-circle-lg bg-primary text-white fs-3 fw-bold">
+                <%= user.name.charAt(0).toUpperCase() %>
+              </div>
+              <div>
+                <h4 class="fw-bold mb-0 text-dark"><%= user.name %></h4>
+                <div class="text-secondary small"><%= user.email %></div>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle mt-1 text-uppercase fs-8">
+                  Role: <%= user.role || 'User' %>
+                </span>
+              </div>
+            </div>
+
+            <div class="list-group list-group-flush border-top border-bottom py-2 mb-4">
+              <div class="list-group-item px-0 py-2 d-flex justify-content-between align-items-center">
+                <span class="text-secondary small">User ID (MongoDB _id)</span>
+                <span class="font-monospace small text-dark"><%= user.id %></span>
+              </div>
+              <div class="list-group-item px-0 py-2 d-flex justify-content-between align-items-center">
+                <span class="text-secondary small">Phone Number</span>
+                <span class="small text-dark"><%= user.phone || 'Not provided' %></span>
+              </div>
+              <div class="list-group-item px-0 py-2 d-flex justify-content-between align-items-center">
+                <span class="text-secondary small">Registered On</span>
+                <span class="small text-dark"><%= user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Active session' %></span>
+              </div>
+            </div>
+
+            <div class="p-3 bg-light rounded-3 border">
+              <h6 class="fw-bold text-dark small mb-2"><i class="bi bi-shield-check text-success me-1"></i> Task 6 Security Compliance</h6>
+              <ul class="list-unstyled small text-muted mb-0">
+                <li><i class="bi bi-check2 text-success me-1"></i> Passwords hashed via <strong>bcryptjs (10 salt rounds)</strong></li>
+                <li><i class="bi bi-check2 text-success me-1"></i> Stateless <strong>JSON Web Token (JWT)</strong> session tokens</li>
+                <li><i class="bi bi-check2 text-success me-1"></i> HTTP-Only cookie storage against XSS attack vectors</li>
+                <li><i class="bi bi-check2 text-success me-1"></i> Strict Per-User Task Authorization & isolation enforced</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task & System Statistics Card -->
+        <div class="col-12 col-lg-7">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-4 h-100">
+            <h5 class="fw-bold text-dark mb-3">Workspace Activity Summary</h5>
+
+            <div class="row g-3 mb-4">
+              <div class="col-4">
+                <div class="p-3 rounded-3 bg-light border text-center">
+                  <div class="fs-4 fw-bold text-primary"><%= stats.total %></div>
+                  <div class="text-secondary fs-8">Total Tasks</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3 rounded-3 bg-light border text-center">
+                  <div class="fs-4 fw-bold text-success"><%= stats.completed %></div>
+                  <div class="text-secondary fs-8">Completed</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3 rounded-3 bg-light border text-center">
+                  <div class="fs-4 fw-bold text-warning"><%= stats.pending + stats.inProgress %></div>
+                  <div class="text-secondary fs-8">Pending</div>
+                </div>
+              </div>
+            </div>
+
+            <h6 class="fw-bold text-dark mb-2">Infrastructure & Runtime Architecture</h6>
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm small align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Component</th>
+                    <th>Configuration / Status</th>
+                    <th>Internship Task</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="fw-semibold">Database (MongoDB)</td>
+                    <td><span class="badge bg-success-subtle text-success"><%= dbStatus.type.toUpperCase() %></span> <%= dbStatus.client %></td>
+                    <td>Task 6</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">Cache & Queue (Redis)</td>
+                    <td><span class="badge bg-primary-subtle text-primary"><%= cacheMetrics.storeType.toUpperCase() %></span> (<%= cacheMetrics.hits %> Hits / <%= cacheMetrics.misses %> Misses)</td>
+                    <td>Task 8</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">External API</td>
+                    <td><span class="badge bg-info-subtle text-info">Open-Meteo</span> 5s Timeout + Rate Limiter</td>
+                    <td>Task 7</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">Authentication</td>
+                    <td><span class="badge bg-dark">JWT + bcrypt</span> Bearer Header & HTTP Cookie</td>
+                    <td>Task 6</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+              <span class="small text-muted">Need to verify all 8 internship deliverables?</span>
+              <a href="/docs" class="btn btn-outline-primary btn-sm px-3">
+                <i class="bi bi-journal-code me-1"></i> View Internship Audit
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
