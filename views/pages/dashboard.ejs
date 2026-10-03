@@ -96,76 +96,139 @@
         </div>
       </div>
 
-      <!-- 4 Core Statistics Cards (Task 3 Requirement) -->
+      <!-- 4 Core Statistics Cards (Task 3 Requirement with Interactive Click-to-Filter & Direct Navigation) -->
       <div class="row g-3 mb-4">
         <!-- 1. Total Tasks -->
         <div class="col-6 col-lg-3">
-          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card">
+          <div class="card border-2 shadow-xs rounded-4 bg-white p-3 h-100 hover-card stat-filter-card active position-relative" id="cardTotalTasks" data-filter="all" style="cursor: pointer;" title="Click to show all tasks in workspace">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <span class="text-secondary small fw-medium">Total Tasks</span>
               <div class="bg-primary-subtle text-primary rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
                 <i class="bi bi-collection fs-5"></i>
               </div>
             </div>
-            <div class="fs-2 fw-bold text-dark"><%= stats.total %></div>
-            <div class="small text-muted mt-1 d-flex align-items-center gap-1">
-              <i class="bi bi-layers text-secondary"></i> All registered tasks
+            <div class="fs-2 fw-bold text-dark" id="statTotalVal"><%= stats.total %></div>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-1 mt-2 pt-2 border-top">
+              <button type="button" class="btn btn-xs btn-primary rounded-pill px-2 py-1 fs-8 fw-semibold stat-card-action-btn" data-filter="all">
+                <i class="bi bi-funnel-fill me-1"></i> Show All
+              </button>
+              <a href="/tasks" class="btn btn-xs btn-outline-secondary rounded-pill px-2 py-1 fs-8">
+                Page <i class="bi bi-arrow-right"></i>
+              </a>
             </div>
           </div>
         </div>
 
         <!-- 2. Completed Tasks -->
         <div class="col-6 col-lg-3">
-          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card stat-filter-card position-relative" id="cardCompletedTasks" data-filter="Completed" style="cursor: pointer;" title="Click to filter completed tasks">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <span class="text-secondary small fw-medium">Completed</span>
               <div class="bg-success-subtle text-success rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
                 <i class="bi bi-check2-circle fs-5"></i>
               </div>
             </div>
-            <div class="fs-2 fw-bold text-success"><%= stats.completed %></div>
-            <div class="small text-muted mt-1 d-flex align-items-center gap-1">
-              <i class="bi bi-graph-up-arrow text-success"></i> <%= stats.completionRate %>% completion rate
+            <div class="fs-2 fw-bold text-success" id="statCompletedVal"><%= stats.completed %></div>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-1 mt-2 pt-2 border-top">
+              <button type="button" class="btn btn-xs btn-success rounded-pill px-2 py-1 fs-8 fw-semibold stat-card-action-btn" data-filter="Completed">
+                <i class="bi bi-check2 me-1"></i> Completed
+              </button>
+              <a href="/tasks?status=Completed" class="btn btn-xs btn-outline-success rounded-pill px-2 py-1 fs-8">
+                Page <i class="bi bi-arrow-right"></i>
+              </a>
             </div>
           </div>
         </div>
 
         <!-- 3. Pending Tasks -->
         <div class="col-6 col-lg-3">
-          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card stat-filter-card position-relative" id="cardPendingTasks" data-filter="Pending" style="cursor: pointer;" title="Click to filter pending and in-progress tasks">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <span class="text-secondary small fw-medium">Pending Tasks</span>
               <div class="bg-warning-subtle text-warning rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
                 <i class="bi bi-hourglass-split fs-5"></i>
               </div>
             </div>
-            <div class="fs-2 fw-bold text-warning"><%= stats.pending + stats.inProgress %></div>
-            <div class="small text-muted mt-1 d-flex align-items-center gap-1">
-              <i class="bi bi-clock-history text-warning"></i> <%= stats.inProgress %> in progress
+            <div class="fs-2 fw-bold text-warning" id="statPendingVal"><%= stats.pending + stats.inProgress %></div>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-1 mt-2 pt-2 border-top">
+              <button type="button" class="btn btn-xs btn-warning rounded-pill px-2 py-1 fs-8 fw-semibold text-dark stat-card-action-btn" data-filter="Pending">
+                <i class="bi bi-hourglass-split me-1"></i> Pending
+              </button>
+              <a href="/tasks?status=Pending" class="btn btn-xs btn-outline-warning rounded-pill px-2 py-1 fs-8 text-dark">
+                Page <i class="bi bi-arrow-right"></i>
+              </a>
             </div>
           </div>
         </div>
 
         <!-- 4. High Priority Tasks -->
         <div class="col-6 col-lg-3">
-          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-3 h-100 hover-card stat-filter-card position-relative" id="cardUrgentTasks" data-filter="Urgent" style="cursor: pointer;" title="Click to filter urgent tasks">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <span class="text-secondary small fw-medium">High / Urgent</span>
               <div class="bg-danger-subtle text-danger rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
                 <i class="bi bi-fire fs-5"></i>
               </div>
             </div>
-            <div class="fs-2 fw-bold text-danger"><%= stats.highPriority %></div>
-            <div class="small text-muted mt-1 d-flex align-items-center gap-1">
-              <i class="bi bi-exclamation-circle text-danger"></i> Requires immediate focus
+            <div class="fs-2 fw-bold text-danger" id="statUrgentVal"><%= stats.highPriority %></div>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-1 mt-2 pt-2 border-top">
+              <button type="button" class="btn btn-xs btn-danger rounded-pill px-2 py-1 fs-8 fw-semibold stat-card-action-btn" data-filter="Urgent">
+                <i class="bi bi-fire me-1"></i> Urgent
+              </button>
+              <a href="/tasks?priority=High" class="btn btn-xs btn-outline-danger rounded-pill px-2 py-1 fs-8">
+                Page <i class="bi bi-arrow-right"></i>
+              </a>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Quick Task Creator Bar (Instant Interactive AJAX) -->
+      <div class="card border-0 shadow-xs rounded-4 bg-white p-3 mb-4 border-start border-primary border-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2">
+          <div class="d-flex align-items-center gap-2">
+            <div class="bg-primary text-white rounded p-1 d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
+              <i class="bi bi-lightning-charge-fill fs-8"></i>
+            </div>
+            <span class="fw-bold small text-dark">Quick Task Creator</span>
+            <span class="badge bg-light text-secondary border fs-8">Live AJAX sync</span>
+          </div>
+          <span class="text-muted fs-8">Add tasks directly without leaving your dashboard</span>
+        </div>
+        <form id="dashQuickTaskForm" class="row g-2 align-items-center">
+          <div class="col-12 col-md-5">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text bg-light text-secondary"><i class="bi bi-check2-square"></i></span>
+              <input type="text" class="form-control" id="dashQuickTitle" placeholder="Task title (e.g. Audit Redis cache latency)..." required />
+            </div>
+          </div>
+          <div class="col-6 col-md-2">
+            <select class="form-select form-select-sm" id="dashQuickPriority">
+              <option value="Medium" selected>Priority: Medium</option>
+              <option value="High">Priority: High</option>
+              <option value="Urgent">Priority: Urgent</option>
+              <option value="Low">Priority: Low</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-2">
+            <select class="form-select form-select-sm" id="dashQuickCategory">
+              <option value="Work" selected>Category: Work</option>
+              <option value="Development">Category: Dev</option>
+              <option value="Personal">Category: Personal</option>
+              <option value="Urgent">Category: Urgent</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-3">
+            <button type="submit" class="btn btn-primary btn-sm w-100 fw-semibold d-flex align-items-center justify-content-center gap-1 shadow-xs" id="dashQuickSubmitBtn">
+              <i class="bi bi-plus-lg"></i> Instant Add
+            </button>
+          </div>
+        </form>
+      </div>
+
       <!-- Second Row: Weather Widget & Completion Progress -->
       <div class="row g-4 mb-4">
-        <!-- Weather Information Widget (Task 7 Requirement) -->
+        <!-- Weather Information Widget (Task 7 Requirement with Interactive City Chips) -->
         <div class="col-12 col-lg-5">
           <div class="card border-0 shadow-xs rounded-4 bg-white h-100 p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -175,21 +238,29 @@
                 </div>
                 <div>
                   <h6 class="fw-bold mb-0 text-dark">Live Weather Integration</h6>
-                  <span class="small text-muted">Real Backend External API (Task 7)</span>
+                  <span class="small text-muted">Open-Meteo REST API (Task 7)</span>
                 </div>
               </div>
-              <a href="/weather" class="btn btn-xs btn-outline-primary py-1 px-2" style="font-size: 0.75rem;">
-                Explore API &rarr;
-              </a>
+              <div class="d-flex align-items-center gap-1">
+                <button type="button" class="btn btn-xs btn-outline-secondary py-1 px-2" id="tempUnitToggleBtn" title="Toggle °C / °F" style="font-size: 0.75rem;">
+                  °C / °F
+                </button>
+                <a href="/weather" class="btn btn-xs btn-outline-primary py-1 px-2" style="font-size: 0.75rem;">
+                  Full API &rarr;
+                </a>
+              </div>
             </div>
 
             <!-- Current Weather Display -->
-            <div class="p-3 bg-gradient-weather rounded-3 border border-info-subtle mb-3" id="weatherDashboardCard">
+            <div class="p-3 bg-gradient-weather rounded-3 border border-info-subtle mb-3 position-relative" id="weatherDashboardCard">
+              <span class="position-absolute top-0 end-0 mt-2 me-2 badge bg-dark-subtle text-dark border fs-8" id="weatherCacheBadge">
+                <i class="bi bi-lightning-charge text-warning"></i> Cache Synced
+              </span>
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <div class="fs-3 fw-extrabold text-dark d-flex align-items-center gap-2">
                     <span id="dashWeatherCity"><%= weather.city %></span>
-                    <% if (weather.country) { %><span class="badge bg-light text-secondary border fs-8"><%= weather.country %></span><% } %>
+                    <% if (weather.country) { %><span class="badge bg-light text-secondary border fs-8" id="dashWeatherCountry"><%= weather.country %></span><% } %>
                   </div>
                   <div class="text-secondary small fw-medium" id="dashWeatherCond"><%= weather.condition %></div>
                 </div>
@@ -211,15 +282,28 @@
               </div>
             </div>
 
+            <!-- 1-Click Popular City Chips -->
+            <div class="mb-2">
+              <span class="fs-8 text-secondary text-uppercase fw-semibold d-block mb-1">Quick Select City:</span>
+              <div class="d-flex flex-wrap gap-1" id="weatherCityChips">
+                <button type="button" class="btn btn-xs btn-light border city-chip" data-city="Delhi">Delhi</button>
+                <button type="button" class="btn btn-xs btn-light border city-chip" data-city="Mumbai">Mumbai</button>
+                <button type="button" class="btn btn-xs btn-light border city-chip" data-city="London">London</button>
+                <button type="button" class="btn btn-xs btn-light border city-chip" data-city="New York">New York</button>
+                <button type="button" class="btn btn-xs btn-light border city-chip" data-city="Tokyo">Tokyo</button>
+                <button type="button" class="btn btn-xs btn-light border city-chip" data-city="Paris">Paris</button>
+              </div>
+            </div>
+
             <!-- Fast City Switcher via AJAX -->
             <div class="d-flex align-items-center gap-2">
-              <input type="text" class="form-control form-control-sm" id="quickCityInput" placeholder="Quick change city (e.g. London, Tokyo)" />
-              <button class="btn btn-outline-secondary btn-sm px-3" id="quickCityBtn" type="button">Update</button>
+              <input type="text" class="form-control form-control-sm" id="quickCityInput" placeholder="Or enter any custom city..." />
+              <button class="btn btn-outline-primary btn-sm px-3" id="quickCityBtn" type="button">Fetch</button>
             </div>
           </div>
         </div>
 
-        <!-- Progress & Category Distribution -->
+        <!-- Progress & Category Distribution with Click-to-Filter -->
         <div class="col-12 col-lg-7">
           <div class="card border-0 shadow-xs rounded-4 bg-white h-100 p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -227,64 +311,106 @@
                 <h6 class="fw-bold mb-0 text-dark">Completion Progress & Work Breakdown</h6>
                 <span class="small text-muted">Real-time status calculated from MongoDB</span>
               </div>
-              <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-1">
+              <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-1" id="dashProgressBadge">
                 <%= stats.completionRate %>% Complete
               </span>
             </div>
 
             <div class="progress mb-4" style="height: 12px; border-radius: 8px;">
-              <div class="progress-bar bg-success" role="progressbar" style="width: <%= stats.completionRate %>%;" aria-valuenow="<%= stats.completionRate %>" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar bg-success" id="dashProgressBar" role="progressbar" style="width: <%= stats.completionRate %>%;" aria-valuenow="<%= stats.completionRate %>" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
 
-            <div class="row g-3 pt-2">
-              <% const catKeys = Object.keys(stats.categories || {}); %>
-              <% if (catKeys.length > 0) { %>
-                <% catKeys.forEach(function(cat) { %>
-                  <div class="col-6 col-sm-4">
-                    <div class="p-2 border rounded-3 bg-light d-flex justify-content-between align-items-center">
-                      <span class="small fw-semibold text-secondary"><%= cat %></span>
-                      <span class="badge bg-dark rounded-pill"><%= stats.categories[cat] %></span>
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fs-8 text-secondary text-uppercase fw-semibold">Categories (Click chip to filter):</span>
+                <button type="button" class="btn btn-xs btn-link text-decoration-none text-muted p-0 fs-8 d-none" id="clearCategoryFilterBtn">Clear Filter</button>
+              </div>
+              <div class="row g-2" id="categoryChipsContainer">
+                <% const catKeys = Object.keys(stats.categories || {}); %>
+                <% if (catKeys.length > 0) { %>
+                  <% catKeys.forEach(function(cat) { %>
+                    <div class="col-6 col-sm-4">
+                      <div class="p-2 border rounded-3 bg-light d-flex justify-content-between align-items-center category-filter-chip hover-card" data-category="<%= cat %>" style="cursor: pointer;">
+                        <span class="small fw-semibold text-secondary"><%= cat %></span>
+                        <span class="badge bg-dark rounded-pill"><%= stats.categories[cat] %></span>
+                      </div>
                     </div>
-                  </div>
-                <% }); %>
-              <% } else { %>
-                <div class="col-12 text-muted small">No task category distribution available yet.</div>
-              <% } %>
+                  <% }); %>
+                <% } else { %>
+                  <div class="col-12 text-muted small">No task category distribution available yet.</div>
+                <% } %>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Third Row: Recent Tasks (Task 3 Requirement) & Background Job Status -->
+      <!-- Third Row: Recent Tasks & Background Job Status -->
       <div class="row g-4">
-        <!-- Recent Tasks Table -->
+        <!-- Recent Tasks Interactive Table with Inline Quick-Actions -->
         <div class="col-12 col-lg-8">
-          <div class="card border-0 shadow-xs rounded-4 bg-white p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="card border-0 shadow-xs rounded-4 bg-white p-4" id="tasksWorkspaceCard">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
               <div>
-                <h6 class="fw-bold mb-0 text-dark">Recent Tasks</h6>
-                <span class="small text-muted">Latest 5 tasks created in your workspace</span>
+                <div class="d-flex align-items-center gap-2">
+                  <h6 class="fw-bold mb-0 text-dark">Tasks Workspace</h6>
+                  <span class="badge bg-primary rounded-pill fs-8" id="visibleTasksCount"><%= (stats.recentTasks || []).length %></span>
+                </div>
+                <span class="small text-muted" id="filterStatusIndicator">Click any card above or tab below to filter</span>
               </div>
-              <a href="/tasks" class="btn btn-sm btn-outline-primary">View All Tasks &rarr;</a>
+              
+              <div class="d-flex align-items-center gap-2">
+                <!-- In-card Instant Live Search -->
+                <div class="input-group input-group-sm" style="max-width: 200px;">
+                  <span class="input-group-text bg-light text-secondary border-end-0"><i class="bi bi-search"></i></span>
+                  <input type="text" class="form-control border-start-0" id="dashTaskSearchInput" placeholder="Filter tasks..." />
+                </div>
+                <a href="/tasks" class="btn btn-sm btn-outline-primary text-nowrap">Full View &rarr;</a>
+              </div>
             </div>
 
-            <% if (stats.recentTasks && stats.recentTasks.length > 0) { %>
-              <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                  <thead class="table-light fs-8 text-uppercase text-secondary">
-                    <tr>
-                      <th>Title</th>
-                      <th>Priority</th>
-                      <th>Status</th>
-                      <th>Category</th>
-                      <th class="text-end">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+            <!-- Filter Tabs Pills -->
+            <ul class="nav nav-pills nav-fill bg-light p-1 rounded-3 mb-3 fs-8" id="dashTaskFilterPills">
+              <li class="nav-item">
+                <button class="nav-link active py-1 px-2 fw-semibold dash-filter-tab" data-tab="all">All</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link py-1 px-2 fw-semibold dash-filter-tab" data-tab="Pending">Pending</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link py-1 px-2 fw-semibold dash-filter-tab" data-tab="In Progress">In Progress</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link py-1 px-2 fw-semibold dash-filter-tab" data-tab="Completed">Completed</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link py-1 px-2 fw-semibold dash-filter-tab" data-tab="Urgent">Urgent</button>
+              </li>
+            </ul>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0" id="dashTasksTable">
+                <thead class="table-light fs-8 text-uppercase text-secondary">
+                  <tr>
+                    <th style="width: 40px;">Done</th>
+                    <th>Title</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Category</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="dashTasksTbody">
+                  <% if (stats.recentTasks && stats.recentTasks.length > 0) { %>
                     <% stats.recentTasks.forEach(function(task) { %>
-                      <tr>
+                      <tr id="task-row-<%= task._id %>" data-task-id="<%= task._id %>" data-status="<%= task.status %>" data-priority="<%= task.priority %>" data-category="<%= task.category %>" data-title="<%= task.title.toLowerCase() %>">
                         <td>
-                          <div class="fw-semibold text-dark text-truncate" style="max-width: 220px;"><%= task.title %></div>
+                          <button type="button" class="btn btn-xs p-0 border-0 text-<%= task.status === 'Completed' ? 'success' : 'secondary' %> toggle-done-btn" data-id="<%= task._id %>" data-status="<%= task.status %>" title="Toggle Done">
+                            <i class="bi <%= task.status === 'Completed' ? 'bi-check-circle-fill fs-5' : 'bi-circle fs-5' %>"></i>
+                          </button>
+                        </td>
+                        <td>
+                          <div class="fw-semibold text-dark text-truncate <%= task.status === 'Completed' ? 'text-decoration-line-through text-muted' : '' %> task-row-title" style="max-width: 220px;"><%= task.title %></div>
                           <% if (task.deadline) { %>
                             <div class="text-muted fs-8">Due: <%= new Date(task.deadline).toLocaleDateString() %></div>
                           <% } %>
@@ -301,49 +427,83 @@
                           <% } %>
                         </td>
                         <td>
-                          <% if (task.status === 'Completed') { %>
-                            <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-check2"></i> Completed</span>
-                          <% } else if (task.status === 'In Progress') { %>
-                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle"><i class="bi bi-arrow-repeat"></i> In Progress</span>
-                          <% } else { %>
-                            <span class="badge bg-warning-subtle text-dark border border-warning-subtle"><i class="bi bi-hourglass"></i> Pending</span>
-                          <% } %>
+                          <select class="form-select form-select-xs border-0 bg-light py-0 px-2 rounded status-dropdown" data-id="<%= task._id %>" style="font-size: 0.75rem; width: auto;">
+                            <option value="Pending" <%= task.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                            <option value="In Progress" <%= task.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                            <option value="Completed" <%= task.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                          </select>
                         </td>
                         <td>
                           <span class="badge bg-light text-dark border"><%= task.category %></span>
                         </td>
                         <td class="text-end">
-                          <a href="/tasks/<%= task._id %>/edit" class="btn btn-xs btn-outline-secondary py-1 px-2" title="Edit">
-                            <i class="bi bi-pencil"></i>
-                          </a>
+                          <div class="btn-group btn-group-sm">
+                            <a href="/tasks/<%= task._id %>/edit" class="btn btn-xs btn-outline-secondary py-1 px-2" title="Edit">
+                              <i class="bi bi-pencil"></i>
+                            </a>
+                            <button type="button" class="btn btn-xs btn-outline-danger py-1 px-2 delete-task-btn" data-id="<%= task._id %>" title="Delete">
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     <% }); %>
-                  </tbody>
-                </table>
-              </div>
-            <% } else { %>
-              <div class="text-center py-4 bg-light rounded-3">
-                <i class="bi bi-clipboard2-check fs-2 text-muted mb-2 d-block"></i>
-                <p class="text-muted mb-2">No tasks created yet.</p>
-                <a href="/tasks/new" class="btn btn-sm btn-primary">Create Your First Task</a>
-              </div>
-            <% } %>
+                  <% } else { %>
+                    <tr id="emptyTasksRow">
+                      <td colspan="6" class="text-center py-4 bg-light text-muted">
+                        <i class="bi bi-clipboard2-check fs-2 text-muted mb-2 d-block"></i>
+                        No tasks created yet. Use the Quick Task Creator above to add your first task!
+                      </td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        <!-- Background Jobs Log (Task 8 Requirement) -->
+        <!-- Background Jobs Log & Control Console (Task 8 Requirement) -->
         <div class="col-12 col-lg-4">
           <div class="card border-0 shadow-xs rounded-4 bg-white p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
-                <h6 class="fw-bold mb-0 text-dark">Background Jobs Queue</h6>
-                <span class="small text-muted">BullMQ & Async Workers</span>
+                <h6 class="fw-bold mb-0 text-dark">Background Jobs Console</h6>
+                <span class="small text-muted">BullMQ & Async Workers (Task 8)</span>
               </div>
               <span class="badge bg-secondary-subtle text-secondary" id="jobCountBadge"><%= recentJobs.length %> Jobs</span>
             </div>
 
-            <div id="jobHistoryList" class="d-flex flex-column gap-2" style="max-height: 280px; overflow-y: auto;">
+            <!-- Direct Dispatch Quick Actions -->
+            <div class="d-flex flex-column gap-2 mb-3">
+              <button type="button" class="btn btn-sm btn-outline-primary text-start d-flex align-items-center justify-content-between trigger-job-btn py-2" data-job="GENERATE_SUMMARY_REPORT">
+                <span class="d-flex align-items-center gap-2">
+                  <i class="bi bi-file-earmark-bar-graph text-primary fs-6"></i>
+                  <span class="fw-semibold">Generate Analytics Report</span>
+                </span>
+                <i class="bi bi-play-fill text-primary"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-warning text-start d-flex align-items-center justify-content-between trigger-job-btn py-2 text-dark" data-job="TASK_DUE_REMINDER">
+                <span class="d-flex align-items-center gap-2">
+                  <i class="bi bi-bell-fill text-warning fs-6"></i>
+                  <span class="fw-semibold">Run Reminder Scan</span>
+                </span>
+                <i class="bi bi-play-fill text-warning"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-success text-start d-flex align-items-center justify-content-between trigger-job-btn py-2" data-job="EXPORT_TASKS_CSV">
+                <span class="d-flex align-items-center gap-2">
+                  <i class="bi bi-filetype-csv text-success fs-6"></i>
+                  <span class="fw-semibold">Background CSV Export</span>
+                </span>
+                <i class="bi bi-play-fill text-success"></i>
+              </button>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fs-8 text-secondary text-uppercase fw-semibold">Execution History:</span>
+              <button type="button" class="btn btn-xs btn-link text-decoration-none text-muted p-0 fs-8" id="clearJobsBtn">Clear</button>
+            </div>
+
+            <div id="jobHistoryList" class="d-flex flex-column gap-2" style="max-height: 250px; overflow-y: auto;">
               <% if (recentJobs && recentJobs.length > 0) { %>
                 <% recentJobs.forEach(function(job) { %>
                   <div class="p-2 border rounded-3 bg-light">
@@ -361,7 +521,7 @@
                 <% }); %>
               <% } else { %>
                 <div class="text-center py-4 text-muted small" id="noJobsMsg">
-                  No background jobs queued. Use the top menu to dispatch asynchronous jobs.
+                  No background jobs queued. Tap any button above to trigger an asynchronous worker!
                 </div>
               <% } %>
             </div>
@@ -373,6 +533,12 @@
 </div>
 
 <!-- Dashboard client interactions -->
+<script>
+  window.__TASKFLOW_TOKEN__ = "<%= locals.currentToken || '' %>";
+  if (window.__TASKFLOW_TOKEN__) {
+    try { sessionStorage.setItem('taskflow_token', window.__TASKFLOW_TOKEN__); } catch (e) {}
+  }
+</script>
 <script src="/js/dashboard-client.js"></script>
 
 <%- include('../partials/footer') %>

@@ -22,6 +22,11 @@ export function extractToken(req: Request): string | null {
     return req.cookies.token;
   }
 
+  // 3. Check Query parameter ?token=... (Crucial for cross-origin iframes where 3rd-party cookies may be blocked)
+  if (req.query && typeof req.query.token === 'string' && req.query.token.trim() !== '') {
+    return req.query.token.trim();
+  }
+
   return null;
 }
 
@@ -43,6 +48,18 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     const payload = AuthService.verifyToken(token);
     req.user = payload;
     res.locals.currentUser = payload;
+    res.locals.currentToken = token;
+
+    // Refresh cross-site iframe cookie if token arrived via query
+    if (req.query && req.query.token) {
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+    }
+
     next();
   } catch (err: any) {
     // Clear invalid cookie if present

@@ -38,11 +38,13 @@ export class PageController {
     }
     const errorMsg = req.query.error as string;
     const errors = errorMsg ? [{ field: 'credentials', message: errorMsg }] : [];
+    const defaultEmail = req.query.email ? String(req.query.email) : 'demo@taskflow.dev';
     return res.render('pages/login', {
       title: 'Sign In – TaskFlow',
       page: 'login',
       errors,
-      values: { email: '' },
+      values: { email: defaultEmail },
+      prefillPassword: 'Password123!',
       registered: req.query.registered === 'true',
       loggedOut: req.query.logout === 'true',
     });

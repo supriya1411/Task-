@@ -8,12 +8,12 @@ export class AuthController {
       const { name, email, password, phone } = req.body;
       const { user, token } = await AuthService.register({ name, email, password, phone });
 
-      // Set HTTP-Only Cookie for session persistence across EJS pages
+      // Set HTTP-Only Cookie for session persistence across EJS pages (with SameSite=None and Secure for iframes)
       res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        sameSite: 'lax',
+        sameSite: 'none',
       });
 
       if (req.originalUrl.startsWith('/api/')) {
@@ -24,8 +24,8 @@ export class AuthController {
         });
       }
 
-      // Redirect to dashboard on browser form submit
-      return res.redirect('/dashboard?registered=true');
+      // Redirect to dashboard on browser form submit (include token in query for iframe cookie resilience)
+      return res.redirect(`/dashboard?registered=true&token=${encodeURIComponent(token)}`);
     } catch (err: any) {
       if (req.originalUrl.startsWith('/api/')) {
         return res.status(400).json({
@@ -52,9 +52,9 @@ export class AuthController {
 
       res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        sameSite: 'lax',
+        sameSite: 'none',
       });
 
       if (req.originalUrl.startsWith('/api/')) {
@@ -65,8 +65,9 @@ export class AuthController {
         });
       }
 
-      const redirectUrl = (req.query.redirect as string) || '/dashboard';
-      return res.redirect(redirectUrl);
+      const redirectBase = (req.query.redirect as string) || '/dashboard';
+      const sep = redirectBase.includes('?') ? '&' : '?';
+      return res.redirect(`${redirectBase}${sep}token=${encodeURIComponent(token)}`);
     } catch (err: any) {
       if (req.originalUrl.startsWith('/api/')) {
         return res.status(401).json({

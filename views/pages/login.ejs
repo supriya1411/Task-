@@ -32,16 +32,22 @@
         <%- include('../partials/alerts') %>
 
         <!-- Demo Account Auto-Fill Callout -->
-        <div class="bg-light border border-secondary-subtle rounded-3 p-3 mb-4">
+        <div class="bg-primary-subtle border border-primary-subtle rounded-3 p-3 mb-4">
           <div class="d-flex justify-content-between align-items-center mb-1">
-            <span class="small fw-bold text-dark"><i class="bi bi-person-badge text-primary me-1"></i> Demo Credentials</span>
-            <button type="button" class="btn btn-xs btn-outline-primary py-0 px-2" id="fillDemoBtn" style="font-size: 0.75rem;">
-              Auto-Fill
-            </button>
+            <span class="small fw-bold text-primary"><i class="bi bi-person-badge-fill me-1"></i> Quick Demo Access</span>
+            <span class="badge bg-primary text-white">Pre-configured</span>
           </div>
-          <div class="small text-muted font-monospace" style="font-size: 0.8rem;">
+          <div class="small text-secondary font-monospace mb-2" style="font-size: 0.8rem;">
             Email: <strong>demo@taskflow.dev</strong><br/>
             Password: <strong>Password123!</strong>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-sm btn-primary w-100 fw-semibold d-flex align-items-center justify-content-center gap-1 shadow-xs" id="oneClickLoginBtn">
+              <i class="bi bi-lightning-charge-fill text-warning"></i> ⚡ 1-Click Instant Sign In
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-primary text-nowrap" id="fillDemoBtn">
+              Fill Inputs
+            </button>
           </div>
         </div>
 
@@ -57,11 +63,11 @@
                 id="loginEmail"
                 name="email"
                 placeholder="name@taskflow.dev"
-                value="<%= typeof values !== 'undefined' && values.email ? values.email : '' %>"
+                value="<%= typeof values !== 'undefined' && values.email ? values.email : 'demo@taskflow.dev' %>"
                 required
               />
             </div>
-            <div class="invalid-feedback">Please enter a valid email address.</div>
+            <div class="invalid-feedback" id="emailErrorMsg">Please enter a valid email address.</div>
           </div>
 
           <div class="mb-4">
@@ -76,16 +82,17 @@
                 id="loginPassword"
                 name="password"
                 placeholder="••••••••"
+                value="<%= typeof prefillPassword !== 'undefined' ? prefillPassword : 'Password123!' %>"
                 required
               />
               <button class="btn btn-light border border-start-0 text-secondary" type="button" id="toggleLoginPasswordBtn">
                 <i class="bi bi-eye" id="toggleLoginPasswordIcon"></i>
               </button>
             </div>
-            <div class="invalid-feedback">Password is required.</div>
+            <div class="invalid-feedback" id="passErrorMsg">Password is required.</div>
           </div>
 
-          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2">
+          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2" id="submitLoginBtn">
             <i class="bi bi-box-arrow-in-right"></i> Sign In to TaskFlow
           </button>
         </form>
@@ -100,15 +107,65 @@
 </main>
 
 <script>
-  // Demo autofill script
-  document.getElementById('fillDemoBtn')?.addEventListener('click', function() {
+  // Fill inputs function
+  function fillDemoCredentials() {
     const emailInput = document.getElementById('loginEmail');
     const passInput = document.getElementById('loginPassword');
     if (emailInput && passInput) {
       emailInput.value = 'demo@taskflow.dev';
       passInput.value = 'Password123!';
       emailInput.classList.remove('is-invalid');
+      emailInput.classList.add('is-valid');
       passInput.classList.remove('is-invalid');
+      passInput.classList.add('is-valid');
+    }
+  }
+
+  // 1-Click Demo Login
+  document.getElementById('oneClickLoginBtn')?.addEventListener('click', function() {
+    fillDemoCredentials();
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitLoginBtn');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Signing In...';
+    }
+    form?.submit();
+  });
+
+  // Demo autofill button
+  document.getElementById('fillDemoBtn')?.addEventListener('click', fillDemoCredentials);
+
+  // Form submit guard to prevent empty submission
+  document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+    const emailInput = document.getElementById('loginEmail');
+    const passInput = document.getElementById('loginPassword');
+    let hasError = false;
+
+    if (!emailInput || !emailInput.value.trim()) {
+      emailInput?.classList.add('is-invalid');
+      hasError = true;
+    } else {
+      emailInput?.classList.remove('is-invalid');
+    }
+
+    if (!passInput || !passInput.value) {
+      passInput?.classList.add('is-invalid');
+      hasError = true;
+    } else {
+      passInput?.classList.remove('is-invalid');
+    }
+
+    if (hasError) {
+      e.preventDefault();
+      e.stopPropagation();
+      // If user hit submit with blank fields, automatically fill with demo credentials for convenience
+      fillDemoCredentials();
+      const submitBtn = document.getElementById('submitLoginBtn');
+      if (submitBtn) {
+        submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Sign In to TaskFlow';
+        submitBtn.disabled = false;
+      }
     }
   });
 

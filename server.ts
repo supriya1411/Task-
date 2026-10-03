@@ -42,6 +42,7 @@ async function startServer() {
   initBackgroundJobs();
 
   // 2. View Engine Setup (EJS - Task 1)
+  app.set('trust proxy', 1);
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, 'views'));
 
@@ -52,8 +53,9 @@ async function startServer() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // 4. Static Assets (Bootstrap, CSS, client JS)
+  // 4. Static Assets (Bootstrap, CSS, client JS, production Vite bundle)
   app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, 'dist')));
 
   // 5. REST API Routes (Task 5, 6, 7, 8)
   app.use('/api/auth', authRoutes);
